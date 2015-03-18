@@ -154,6 +154,18 @@ func (db *DB) Put(id string, doc interface{}, rev string) (newrev string, err er
 	return responseRev(db.closedRequest("PUT", path, b))
 }
 
+// Create stores a document into the given database if the _id doesn't
+// yet exist.
+func (db *DB) Create(id string, doc interface{}) (newrev string, err error) {
+	path := revpath("", db.name, id)
+	j, err := json.Marshal(doc)
+	if err != nil {
+		return "", err
+	}
+	b := bytes.NewReader(j)
+	return responseRev(db.closedRequest("POST", path, b))
+}
+
 // Delete marks a document revision as deleted.
 func (db *DB) Delete(id, rev string) (newrev string, err error) {
 	path := revpath(rev, db.name, id)
