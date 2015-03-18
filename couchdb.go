@@ -156,8 +156,8 @@ func (db *DB) Put(id string, doc interface{}, rev string) (newrev string, err er
 
 // Create stores a document into the given database if the _id doesn't
 // yet exist.
-func (db *DB) Create(id string, doc interface{}) (newrev string, err error) {
-	path := revpath("", db.name, id)
+func (db *DB) Create(doc interface{}) (newrev string, err error) {
+	path := revpath("", db.name)
 	j, err := json.Marshal(doc)
 	if err != nil {
 		return "", err
